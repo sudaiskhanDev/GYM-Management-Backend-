@@ -48,7 +48,7 @@ class MemberCreateView(APIView):
         paginator = MemberPagination()
         paginated_members = paginator.paginate_queryset(members, request)
 
-        serializer = MemberSerializer(paginated_members, many=True)
+        serializer = MemberSerializer(paginated_members, many=True) 
 
         return paginator.get_paginated_response({
             "message": "Members retrieved successfully",
