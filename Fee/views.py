@@ -39,3 +39,20 @@ class PayFeeView(APIView):
             'message': 'Payment failed',
             'errors': serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import PaymentModel
+from .serializers import PaymentSerializer
+
+class PaymentListView(APIView):
+
+    def get(self, request):
+        payments = PaymentModel.objects.select_related('member').order_by('-paid_at')
+        serializer = PaymentSerializer(payments, many=True)
+
+        return Response({
+            'count': payments.count(),
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
